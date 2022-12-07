@@ -47,4 +47,4 @@ async def get_spiral_data(uid):
     # print("spiral abyss data ::::: ", data.max_floor, data.total_stars)W
 
 
-bot.run("MTAzODI2MDE2ODc5NTg4OTc1NA.GVuMzA.7VTTScQ-LEu0-Karwd8UZ5VtljzrZK5gGnO9gA")
+bot.run("")
