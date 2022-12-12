@@ -1,6 +1,7 @@
 import genshinstats
 import discord
 from discord.ext import commands
+# from PIL import Image ::::: 이미지 생성을 위한 라이브러리(pip install Pillow)
 
 intents = discord.Intents.all()
 intents.members = True
@@ -15,7 +16,15 @@ async def on_ready():
 
 @bot.command()
 async def chat(ctx):
-    await ctx.send("{}, plz do something!".format(ctx.author.mention))
+    # embed sample code
+    embed = discord.Embed(title="Test Title", colour=discord.Colour.blue())
+    embed.set_author(name="Embeded Message Test")
+    embed.set_footer(text="from 원붕이의 원신생활")
+    # embed.set_thumbnail(url="")
+    out = "{}, plz do something!".format(ctx.author.mention)
+    embed.add_field(name="sample1", value=out)
+    embed.add_field(name="sample2", value="")
+    await ctx.send(embed=embed)
 
 
 @bot.command()
