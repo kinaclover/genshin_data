@@ -1,7 +1,15 @@
 import json
 import rsa
+import requests
+import aiohttp
+import aiohttp.web
+import yarl
+import webbrowser
+import time
+
 import genshinstats
 import genshin
+from genshin.utility import geetest as geetest_utility
 import discord
 from discord.ext import commands
 # from PIL import Image ::::: 이미지 생성을 위한 라이브러리(pip install Pillow)
@@ -37,6 +45,9 @@ async def get_data_test(ctx):
     uid = "801936571"
     client = genshin.Client()
     client.set_browser_cookies()
+    
+    userData = await client.get_full_honkai_user(10095288)
+    print(userData)
 
     # login with username/password
     # client = genshin.Client()
@@ -44,11 +55,35 @@ async def get_data_test(ctx):
     # print(cookies)
     # {'ltoken': '', 'ltuid': '', 'cookie_token': '', 'account_id': '', 'stoken': ''}
 
-    data = await client.get_genshin_user(uid)
+    # data = await client.get_genshin_user(uid)
     # file_path = 'test_file_2.json'
-    print(data.stats)
+    # print(data.stats)
     # with open(file_path, 'w', encoding='utf-8') as o:
     #     o.write(data.stats)
+
+
+@bot.command("test")
+async def get_cookies_test(ctx):
+    # session = requests.Session()
+    WEB_LOGIN_URL = yarl.URL("https://api-account-os.hoyolab.com/account/auth/api/webLoginByPassword")
+    mmt = await geetest_utility.create_mmt()
+    payload = dict(
+        account="",
+        password=geetest_utility.encrypt_geetest_password(""),
+        is_crypto="true",
+        source="account.mihoyo.com",
+        mmt_key=mmt["mmt_key"],
+        token_type=0b111,
+    )
+    print(payload)
+    print(int(time.time()))
+    # payload.update(geetest)
+    async with aiohttp.ClientSession() as session:
+        async with session.post(WEB_LOGIN_URL, json=payload) as r:
+            data = await r.json()
+            print(data)
+            cookies = {cookie.key: cookie.value for cookie in r.cookies.values()}
+            print(cookies)
 
 
 @bot.command()
